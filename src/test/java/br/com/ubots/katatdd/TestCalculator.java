@@ -44,10 +44,23 @@ public class TestCalculator {
     }
 
     @Test
-    public void testIgnoreOverThousandValue(){
+    public void testSingleManyCustomDelimiters() {
+        int result = calculator.sum("//[***][;;;]\n1***2;;;2");
+        assertEquals(5, result);
+    }
+
+    @Test
+    public void testMultiplyCustomDelimeters() {
+        int result = calculator.sum("//[...][,]\n10...10,5");
+        assertEquals(25, result);
+    }
+
+    @Test
+    public void testIgnoreOverThousandValue() {
         int result = calculator.sum("1001,3,7,2000");
         assertEquals(10, result);
     }
+
     @Test
     public void testExpressionOneNegativeNumber() {
         try {
@@ -57,14 +70,20 @@ public class TestCalculator {
             assertEquals("-1", e.getMessage());
         }
     }
+
     @Test
-    public void testExpressionAnyNegativeNumbers(){
+    public void testExpressionAnyNegativeNumbers() {
         try {
             int result = calculator.sum("-7,1,-1,-3,-4");
             fail("do not throw exception");
-        } catch (NegativeNumberException e){
+        } catch (NegativeNumberException e) {
             assertEquals("-7 -1 -3 -4", e.getMessage());
         }
+    }
+    @Test
+    public void fastTest(){
+        int result = calculator.sum("//[,,]\n10,,10");
+        assertEquals(20, result);
     }
 
 }

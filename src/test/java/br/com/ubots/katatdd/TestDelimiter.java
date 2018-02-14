@@ -6,19 +6,30 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestDelimiter {
-    private Delimiter delimiter;
-    @Before
-    public void setup(){
-        this.delimiter = new Delimiter();
-    }
+
     @Test
     public void testCatchDelimiterDefault(){
         String expression = "1,2";
-        assertEquals(", | \n", delimiter.getDelimiters(expression));
+        Delimiter delimiter = new Delimiter(expression);
+        assertEquals(",|\n", delimiter.getDelimiters());
     }
     @Test
-    public void testCAtchCustomDelimiters(){
+    public void testCatchSingleCustomDelimiters(){
         String expression = "//.\n1.2";
-        assertEquals(".", delimiter.getDelimiters(expression));
+        Delimiter delimiter = new Delimiter(expression);
+        assertEquals(".", delimiter.getDelimiters());
+    }
+    @Test
+    public void testCatchSingleManyCustomDelimiters(){
+        String expression = "//[***]\n1***3";
+        Delimiter delimiter = new Delimiter(expression);
+        assertEquals("***", delimiter.getDelimiters());
+    }
+
+    @Test
+    public void testCatchMultipleCustomDelimiters(){
+        String expression = "//[.][;]\n1.3;4";
+        Delimiter delimiter = new Delimiter(expression);
+        assertEquals(".|;", delimiter.getDelimiters());
     }
 }

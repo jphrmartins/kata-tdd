@@ -4,20 +4,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Delimiter {
-    private Pattern pattern;
-    private String delimiters;
-    private Matcher matcher;
+    private Matcher singleMatcher;
+    private Matcher multipleMatcher;
 
-    public Delimiter() {
-        this.pattern = Pattern.compile("(^[\\/]{2})([\\W]+)\\n");
-        this.delimiters = ", | \n";
+    public Delimiter(String expression) {
+        this.singleMatcher = Pattern.compile("(^[\\/]{2})([\\W]{1})\\n").matcher(expression);
+        this.multipleMatcher = Pattern.compile("(?<=\\[)([^\\[\\]]+)(?=\\])").matcher(expression);
     }
 
-    public String getDelimiters(String expression) {
-        this.matcher = this.pattern.matcher(expression);
-        if (matcher.find()){
-            delimiters = matcher.group(2);
+    public String getDelimiters() {
+        if (singleMatcher.find()) {
+            return singleMatcher.group(2);
+        } else if (multipleMatcher.find()) {
+            return getMultipleDelimiters();
         }
-        return delimiters;
+        return ",|\n";
     }
+
+    private String getMultipleDelimiters() {
+        this.multipleMatcher = this.multipleMatcher.reset();
+        StringBuffer delimiters = new StringBuffer();
+        while (multipleMatcher.find()){
+            delimiters.append(multipleMatcher.group() + "|");
+        }
+        return delimiters.substring(0, delimiters.length() - 1);
+    }
+
 }
