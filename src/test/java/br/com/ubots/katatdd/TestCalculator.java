@@ -1,5 +1,6 @@
 package br.com.ubots.katatdd;
 
+import br.com.ubots.katatdd.exception.NegativeNumberException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,8 +33,38 @@ public class TestCalculator {
 
     @Test
     public void testSumAnySizeStringValues() {
-        int result = calculator.sum("3,\n4");
+        int result = calculator.sum("3\n4");
         assertEquals(7, result);
+    }
+
+    @Test
+    public void testCustomDelimiterAnySizeStringValue() {
+        int result = calculator.sum("//;\n1;2");
+        assertEquals(3, result);
+    }
+
+    @Test
+    public void testIgnoreOverThousandValue(){
+        int result = calculator.sum("1001,3,7,2000");
+        assertEquals(10, result);
+    }
+    @Test
+    public void testExpressionOneNegativeNumber() {
+        try {
+            int result = calculator.sum("1,-1");
+            fail("do not throw exception");
+        } catch (NegativeNumberException e) {
+            assertEquals("-1", e.getMessage());
+        }
+    }
+    @Test
+    public void testExpressionAnyNegativeNumbers(){
+        try {
+            int result = calculator.sum("-7,1,-1,-3,-4");
+            fail("do not throw exception");
+        } catch (NegativeNumberException e){
+            assertEquals("-7 -1 -3 -4", e.getMessage());
+        }
     }
 
 }
