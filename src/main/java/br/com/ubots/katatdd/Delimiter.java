@@ -14,7 +14,7 @@ public class Delimiter {
 
     public String getDelimiters() {
         if (singleMatcher.find()) {
-            return singleMatcher.group(2);
+            return Pattern.quote(singleMatcher.group(2));
         } else if (multipleMatcher.find()) {
             return getMultipleDelimiters();
         }
@@ -25,7 +25,7 @@ public class Delimiter {
         this.multipleMatcher = this.multipleMatcher.reset();
         StringBuffer delimiters = new StringBuffer();
         while (multipleMatcher.find()){
-            delimiters.append(multipleMatcher.group() + "|");
+            delimiters.append(Pattern.quote(multipleMatcher.group()) + "|");
         }
         return delimiters.substring(0, delimiters.length() - 1);
     }

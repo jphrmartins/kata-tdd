@@ -18,7 +18,7 @@ public class CalculatorString {
 
     private int getResult(String expression) {
         String[] expressionSplited = getSplitDelimiters(expression);
-        List<Integer> expressionClean = cleanUpExpression(expressionSplited);
+        List<Integer> expressionClean = ignoreOverThousandValues(expressionSplited);
         return sumValues(expressionClean);
     }
 
@@ -26,19 +26,23 @@ public class CalculatorString {
         Delimiter delimiter = new Delimiter(expression);
         String delimiters = delimiter.getDelimiters();
         if (",|\n".equals(delimiters)) {
-            return expression.split("[" + delimiters + "]");
+            return expression.split(delimiters);
         }
         return getCustomDelimiters(expression, delimiters);
     }
 
-    private List<Integer> cleanUpExpression(String[] expressionSplited) {
+    private String[] getCustomDelimiters(String expression, String delimiters) {
+        String expressionSplited[] = expression.split("\\n");
+        String numbersPosition = expressionSplited[1];
+        return numbersPosition.split(delimiters);
+    }
+
+    private List<Integer> ignoreOverThousandValues(String[] expressionSplited) {
         List<Integer> numbers = new ArrayList<>();
-        for(int i = 0; i < expressionSplited.length; i++){
-            if (!expressionSplited[i].isEmpty()){
-                int value = Integer.parseInt(expressionSplited[i]);
-                if (value<=1000){
-                    numbers.add(value);
-                }
+        for (int i = 0; i < expressionSplited.length; i++) {
+            int value = Integer.parseInt(expressionSplited[i]);
+            if (value <= 1000) {
+                numbers.add(value);
             }
         }
         return numbers;
@@ -66,11 +70,5 @@ public class CalculatorString {
             numbers += negative + " ";
         }
         return numbers.trim();
-    }
-
-    private String[] getCustomDelimiters(String expression, String delimiters) {
-        String expressionSplited[] = expression.split("\\n");
-        String numbersPosition = expressionSplited[1];
-        return numbersPosition.split("[" + delimiters + "]");
     }
 }

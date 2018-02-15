@@ -4,6 +4,8 @@ import br.com.ubots.katatdd.exception.NegativeNumberException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.regex.Pattern;
+
 import static org.junit.Assert.*;
 
 public class TestCalculator {
@@ -32,7 +34,13 @@ public class TestCalculator {
     }
 
     @Test
-    public void testSumAnySizeStringValues() {
+    public void testSumAnySizeStringValuesCommaDelimiter() {
+        int result = calculator.sum("5,7");
+        assertEquals(12, result);
+    }
+
+    @Test
+    public void testSumAnySizeStringValuesNewLineDelimiter() {
         int result = calculator.sum("3\n4");
         assertEquals(7, result);
     }
@@ -45,13 +53,13 @@ public class TestCalculator {
 
     @Test
     public void testSingleManyCustomDelimiters() {
-        int result = calculator.sum("//[***][;;;]\n1***2;;;2");
+        int result = calculator.sum("//[***]\n1***2***2");
         assertEquals(5, result);
     }
 
     @Test
     public void testMultiplyCustomDelimeters() {
-        int result = calculator.sum("//[...][,]\n10...10,5");
+        int result = calculator.sum("//[.][,]\n10.10,5");
         assertEquals(25, result);
     }
 
@@ -79,11 +87,6 @@ public class TestCalculator {
         } catch (NegativeNumberException e) {
             assertEquals("-7 -1 -3 -4", e.getMessage());
         }
-    }
-    @Test
-    public void fastTest(){
-        int result = calculator.sum("//[,,]\n10,,10");
-        assertEquals(20, result);
     }
 
 }
