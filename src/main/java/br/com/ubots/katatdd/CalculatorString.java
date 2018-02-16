@@ -7,10 +7,13 @@ import java.util.List;
 
 public class CalculatorString {
 
+    private static final int ALONE_NUMBER = 1;
+    private static final int LIMIT_NUMBER = 1000;
+
     public int sum(String expression) {
         if (expression.isEmpty()) {
             return 0;
-        } else if (expression.trim().length() == 1) {
+        } else if (expression.trim().length() == CalculatorString.ALONE_NUMBER) {
             return Integer.parseInt(expression.trim());
         }
         return getResult(expression);
@@ -41,7 +44,7 @@ public class CalculatorString {
         List<Integer> numbers = new ArrayList<>();
         for (int i = 0; i < expressionSplited.length; i++) {
             int value = Integer.parseInt(expressionSplited[i]);
-            if (value <= 1000) {
+            if (value <= CalculatorString.LIMIT_NUMBER) {
                 numbers.add(value);
             }
         }

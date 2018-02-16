@@ -4,11 +4,9 @@ import br.com.ubots.katatdd.exception.NegativeNumberException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.regex.Pattern;
-
 import static org.junit.Assert.*;
 
-public class TestCalculator {
+public class CalculatorTest {
     private CalculatorString calculator;
 
     @Before
